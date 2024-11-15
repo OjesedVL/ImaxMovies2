@@ -5,32 +5,48 @@ public class ImaxMovies {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Lista de filmes e sessões
-        String[] filmes = {
-                "1 - Matrix",
-                "2 - Seven: Os Sete Crimes Capitais",
-                "3 - O Iluminado",
-                "4 - Scarface"
+        // Lista de filmes com suas informações detalhadas
+        Filme[] filmes = {
+                new Filme("Matrix", "Lana Wachowski, Lilly Wachowski",
+                        "Um hacker descobre que o mundo em que vive é uma simulação virtual criada por máquinas para escravizar a humanidade.",
+                        "Ação, Ficção Científica", 136),
+                new Filme("Seven: Os Sete Crimes Capitais", "David Fincher",
+                        "Dois detetives perseguem um assassino que usa os sete pecados capitais como inspiração para seus crimes.",
+                        "Crime, Drama, Mistério", 127),
+                new Filme("O Iluminado", "Stanley Kubrick",
+                        "Um homem fica obcecado por uma entidade maligna em um hotel isolado durante o inverno, levando-o a perder a razão.",
+                        "Terror, Mistério", 146),
+                new Filme("Scarface", "Brian De Palma",
+                        "A história de Tony Montana, um imigrante cubano que se torna um grande traficante de drogas em Miami.",
+                        "Crime, Drama", 170)
         };
 
+        // Exibir lista de filmes e suas informações
+        System.out.println("Escolha um filme e veja suas informações:\n");
+        for (int i = 0; i < filmes.length; i++) {
+            System.out.println((i + 1) + " - " + filmes[i].getNome());
+            System.out.println(filmes[i]); // Exibe informações do filme usando toString()
+            System.out.println("----------------------------------------------------");
+        }
+
+        // Perguntar ao usuário qual filme ele deseja escolher
+        System.out.print("Digite o número do filme desejado: ");
+        int filmeEscolhido = scanner.nextInt();
+
+        // Validação da escolha do filme
+        while (filmeEscolhido < 1 || filmeEscolhido > filmes.length) {
+            System.out.println("Opção inválida. Por favor, escolha um número entre 1 e " + filmes.length);
+            System.out.print("Digite o número do filme desejado: ");
+            filmeEscolhido = scanner.nextInt();
+        }
+
+        // Lista de sessões
         String[] sessoes = {
                 "1 - 14:00",
                 "2 - 16:30",
                 "3 - 19:00",
                 "4 - 21:30"
         };
-
-        // Preço dos ingressos
-        double precoInteira = 32.0;
-        double precoMeia = 16.0;
-
-        // Exibir lista de filmes
-        System.out.println("Escolha um filme:");
-        for (String filme : filmes) {
-            System.out.println(filme);
-        }
-        System.out.print("Digite o número do filme desejado: ");
-        int filmeEscolhido = scanner.nextInt();
 
         // Exibir lista de sessões
         System.out.println("\nEscolha a sessão:");
@@ -40,6 +56,13 @@ public class ImaxMovies {
         System.out.print("Digite o número da sessão desejada: ");
         int sessaoEscolhida = scanner.nextInt();
 
+        // Validação da escolha da sessão
+        while (sessaoEscolhida < 1 || sessaoEscolhida > sessoes.length) {
+            System.out.println("Opção inválida. Por favor, escolha um número entre 1 e " + sessoes.length);
+            System.out.print("Digite o número da sessão desejada: ");
+            sessaoEscolhida = scanner.nextInt();
+        }
+
         // Perguntar a quantidade de ingressos
         System.out.print("\nDigite a quantidade de ingressos inteiros: ");
         int ingressosInteiros = scanner.nextInt();
@@ -47,18 +70,27 @@ public class ImaxMovies {
         System.out.print("Digite a quantidade de ingressos meia-entrada: ");
         int ingressosMeia = scanner.nextInt();
 
+        // Preço dos ingressos
+        double precoInteira = 32.0;
+        double precoMeia = 16.0;
+
         // Calcular total
         double total = (ingressosInteiros * precoInteira) + (ingressosMeia * precoMeia);
 
-        // Exibir resumo e total a pagar
-        System.out.println("\nResumo da compra:");
-        System.out.println("Filme escolhido: " + filmes[filmeEscolhido - 1].split(" - ")[1]);
-        System.out.println("Sessão escolhida: " + sessoes[sessaoEscolhida - 1].split(" - ")[1]);
-        System.out.println("Ingressos Inteiros: " + ingressosInteiros + " x R$ " + precoInteira);
-        System.out.println("Ingressos Meia-Entrada: " + ingressosMeia + " x R$ " + precoMeia);
+        // Criar ingresso para o filme escolhido
+        Filme filmeEscolhidoObjeto = filmes[filmeEscolhido - 1];
+        String tipoIngresso = (ingressosInteiros > 0) ? "Inteira" : "Meia";
+        String horarioSessao = sessoes[sessaoEscolhida - 1].split(" - ")[1];
+
+        // Criar um ingresso
+        Ingresso ingresso = new Ingresso(filmeEscolhidoObjeto, tipoIngresso, horarioSessao);
+
+        // Exibir o ingresso
+        System.out.println("\nResumo do Ingresso:");
+        System.out.println(ingresso);
         System.out.println("Total a pagar: R$ " + total);
 
+        // Fechar o scanner
         scanner.close();
     }
 }
-
